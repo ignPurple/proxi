@@ -7,7 +7,7 @@ public class Proxi {
     private final MetadataStorage metadataStorage;
     private final FactoryStorage factoryStorage;
 
-    private static Proxi INSTANCE;
+    private static Proxi instance;
 
     Proxi() {
         this.metadataStorage = new MetadataStorage();
@@ -15,7 +15,7 @@ public class Proxi {
     }
 
     public static Proxi getInstance() {
-        return Proxi.INSTANCE;
+        return Proxi.instance;
     }
 
     public MetadataStorage getMetadataStorage() {
@@ -27,6 +27,6 @@ public class Proxi {
     }
 
     static {
-        Proxi.INSTANCE = new Proxi();
+        Proxi.instance = new Proxi();
     }
 }

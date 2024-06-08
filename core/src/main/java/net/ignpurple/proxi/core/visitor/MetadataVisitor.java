@@ -17,7 +17,7 @@ import java.lang.reflect.Method;
 public class MetadataVisitor<T> implements ClassVisitor<T> {
 
     @Override
-    public DynamicType.Builder<T> visit(DynamicType.Builder<T> builder) {
+    public DynamicType.Builder<T> visitMethods(DynamicType.Builder<T> builder) {
         return builder
             .method(ElementMatchers.isMethod()
                 .and(ElementMatchers.returns(Metadata.class))

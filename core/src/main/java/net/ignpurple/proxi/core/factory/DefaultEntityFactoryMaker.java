@@ -33,7 +33,8 @@ public class DefaultEntityFactoryMaker<T extends Entity> implements EntityFactor
     @Override
     public EntityFactory<T> make() {
         for (final ClassVisitor<T> visitor : this.visitors) {
-            this.entityBuilder = visitor.visit(this.entityBuilder);
+            this.entityBuilder = visitor.visitFields(this.entityBuilder);
+            this.entityBuilder = visitor.visitMethods(this.entityBuilder);
         }
 
         final Class<? extends T> proxiedClass = this.entityBuilder.make()
