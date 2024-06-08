@@ -2,7 +2,9 @@ package net.ignpurple.proxi.api.factory;
 
 import net.ignpurple.proxi.api.entity.Entity;
 
-public interface EntityFactory<T extends Entity> {
+import java.lang.invoke.MethodHandle;
+
+public interface ProxyWrapper<T extends Entity> {
 
     /**
      * This is used to create an instance of the class stored inside the factory.
@@ -10,4 +12,10 @@ public interface EntityFactory<T extends Entity> {
      * @return The newly created entity
      */
     T createEntity();
+
+    void setOriginalClass(Class<? extends T> originalClass);
+
+    void setProxiedClass(Class<? extends T> proxiedClass);
+
+    void setConstructor(MethodHandle constructor);
 }

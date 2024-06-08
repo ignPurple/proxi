@@ -3,25 +3,22 @@ package net.ignpurple.proxi.core.factory;
 import net.ignpurple.proxi.api.entity.Entity;
 import net.ignpurple.proxi.api.exception.EntityCreationException;
 import net.ignpurple.proxi.api.exception.NoConstructorFoundException;
-import net.ignpurple.proxi.api.factory.EntityFactory;
+import net.ignpurple.proxi.api.factory.ProxyWrapper;
 import net.ignpurple.proxi.core.Proxi;
 import net.ignpurple.proxi.core.entity.metadata.EntityMetadata;
 
 import java.lang.invoke.MethodHandle;
-import java.lang.reflect.Constructor;
 import java.util.List;
-import java.util.logging.Logger;
 
 @SuppressWarnings("unchecked")
-public class DefaultEntityFactory<T extends Entity> implements EntityFactory<T> {
-    private final Class<? extends T> originalClass;
+public class EntityProxy<T extends Entity> implements ProxyWrapper<T> {
+    private Class<? extends T> originalClass;
+    private Class<? extends T> proxiedClass;
+    private MethodHandle constructor;
     private final List<String> fields;
-    private final MethodHandle constructor;
 
-    public DefaultEntityFactory(Class<? extends T> originalClass, List<String> fields, MethodHandle constructor) {
-        this.originalClass = originalClass;
+    public EntityProxy(List<String> fields) {
         this.fields = fields;
-        this.constructor = constructor;
     }
 
     @Override
@@ -40,5 +37,20 @@ public class DefaultEntityFactory<T extends Entity> implements EntityFactory<T> 
         }
 
         return null;
+    }
+
+    @Override
+    public void setOriginalClass(Class<? extends T> originalClass) {
+        this.originalClass = originalClass;
+    }
+
+    @Override
+    public void setProxiedClass(Class<? extends T> proxiedClass) {
+        this.proxiedClass = proxiedClass;
+    }
+
+    @Override
+    public void setConstructor(MethodHandle constructor) {
+        this.constructor = constructor;
     }
 }

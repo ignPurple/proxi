@@ -2,7 +2,7 @@ package net.ignpurple.core.test;
 
 import net.ignpurple.core.test.entity.TestEntity;
 import net.ignpurple.proxi.api.entity.metadata.Metadata;
-import net.ignpurple.proxi.api.factory.EntityFactory;
+import net.ignpurple.proxi.api.factory.ProxyWrapper;
 import net.ignpurple.proxi.core.Proxi;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,7 @@ public class EntityTest {
     @Test
     public void factoryCreation() {
         final Proxi proxi = Proxi.getInstance();
-        final EntityFactory<TestEntity> newFactory = proxi.getFactoryStorage().create(TestEntity.class);
+        final ProxyWrapper<TestEntity> newFactory = proxi.getFactoryStorage().create(TestEntity.class);
         final TestEntity entity = newFactory.createEntity();
 
         Assertions.assertNotNull(entity);
@@ -22,7 +22,7 @@ public class EntityTest {
     @Test
     public void entityMetadata() {
         final Proxi proxi = Proxi.getInstance();
-        final EntityFactory<TestEntity> newFactory = proxi.getFactoryStorage().create(TestEntity.class);
+        final ProxyWrapper<TestEntity> newFactory = proxi.getFactoryStorage().create(TestEntity.class);
         final TestEntity entity = newFactory.createEntity();
 
         entity.getMetadata().setCustomData("test", "Hi");
