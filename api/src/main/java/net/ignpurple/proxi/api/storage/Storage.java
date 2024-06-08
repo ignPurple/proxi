@@ -4,11 +4,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class Storage<K, T> {
-    protected final Map<K, T> storage;
-
-    public Storage() {
-        this.storage = new ConcurrentHashMap<>();
-    }
+    protected final Map<K, T> storage = new ConcurrentHashMap<>();
 
     public T get(K key) {
         return this.storage.get(key);

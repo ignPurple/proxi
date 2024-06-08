@@ -2,6 +2,7 @@ package net.ignpurple.proxi.api.factory;
 
 import net.ignpurple.proxi.api.entity.Entity;
 
+import java.lang.invoke.MethodHandle;
 import java.lang.reflect.Constructor;
 
 public interface EntityFactoryMaker<T extends Entity> {
@@ -17,5 +18,5 @@ public interface EntityFactoryMaker<T extends Entity> {
      * an empty constructor, to allow the entity can be created.
      * @return The constructor that is found inside the entity.
      */
-    Constructor<T> findConstructor(Class<? extends T> proxiedClass);
+    MethodHandle findConstructor(Class<? extends T> proxiedClass);
 }

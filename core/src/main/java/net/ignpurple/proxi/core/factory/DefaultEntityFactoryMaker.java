@@ -3,10 +3,14 @@ package net.ignpurple.proxi.core.factory;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.dynamic.DynamicType;
 import net.ignpurple.proxi.api.entity.Entity;
+import net.ignpurple.proxi.api.exception.NoConstructorFoundException;
 import net.ignpurple.proxi.api.factory.EntityFactory;
 import net.ignpurple.proxi.api.factory.EntityFactoryMaker;
 import net.ignpurple.proxi.api.visitor.ClassVisitor;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -36,10 +40,9 @@ public class DefaultEntityFactoryMaker<T extends Entity> implements EntityFactor
             .load(this.getClass().getClassLoader())
             .getLoaded();
 
-        final Constructor<T> constructor = this.findConstructor(proxiedClass);
-
+        final MethodHandle constructor = this.findConstructor(proxiedClass);
         return new DefaultEntityFactory<>(
-            proxiedClass,
+            this.entityClass,
             Arrays.stream(this.entityClass.getDeclaredFields())
                 .map(Field::getName)
                 .collect(Collectors.toList()),
@@ -48,23 +51,14 @@ public class DefaultEntityFactoryMaker<T extends Entity> implements EntityFactor
     }
 
     @Override
-    public Constructor<T> findConstructor(Class<? extends T> proxiedClass) {
-        Constructor<?> found = null;
-        for (final Constructor<?> constructor : proxiedClass.getDeclaredConstructors()) {
-            if (constructor.getParameterCount() != 0) {
-                continue;
-            }
-
-            found = constructor;
-            break;
+    public MethodHandle findConstructor(Class<? extends T> proxiedClass) {
+        try {
+            return MethodHandles.lookup().findConstructor(proxiedClass, MethodType.methodType(void.class));
+        } catch (NoSuchMethodException | IllegalAccessException exception) {
+            new NoConstructorFoundException(this.entityClass, exception).printStackTrace();
         }
 
-        if (found == null) {
-            throw new IllegalStateException("Cannot find empty constructor for class " + this.entityClass.getSimpleName());
-        }
-
-        found.setAccessible(true);
-        return (Constructor<T>) found;
+        return null;
     }
 
     private DynamicType.Builder<T> createEntityBuilder() {
