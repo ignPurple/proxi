@@ -2,3 +2,6 @@ rootProject.name = 'proxi'
 
 include 'api'
 include 'core'
+include 'database'
+include 'mongo'
+

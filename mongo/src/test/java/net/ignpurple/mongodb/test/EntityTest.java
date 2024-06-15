@@ -1,7 +1,6 @@
-package net.ignpurple.core.test;
+package net.ignpurple.mongodb.test;
 
-import net.ignpurple.core.test.entity.IDTestEntity;
-import net.ignpurple.core.test.entity.TestEntity;
+import net.ignpurple.mongodb.test.entity.MongoTestEntity;
 import net.ignpurple.proxi.api.entity.metadata.Metadata;
 import net.ignpurple.proxi.api.factory.ProxyWrapper;
 import net.ignpurple.proxi.core.Proxi;
@@ -11,20 +10,10 @@ import org.junit.jupiter.api.Test;
 public class EntityTest {
 
     @Test
-    public void factoryCreation() {
+    public void mongoEntityFactoryCreation() {
         final Proxi proxi = Proxi.getInstance();
-        final ProxyWrapper<TestEntity> newFactory = proxi.getFactoryStorage().create(TestEntity.class);
-        final TestEntity entity = newFactory.createEntity();
-
-        Assertions.assertNotNull(entity);
-        Assertions.assertNotNull(entity.getMetadata());
-    }
-
-    @Test
-    public void idEntityFactoryCreation() {
-        final Proxi proxi = Proxi.getInstance();
-        final ProxyWrapper<IDTestEntity> newFactory = proxi.getFactoryStorage().create(IDTestEntity.class);
-        final IDTestEntity entity = newFactory.createEntity();
+        final ProxyWrapper<MongoTestEntity> newFactory = proxi.getFactoryStorage().create(MongoTestEntity.class);
+        final MongoTestEntity entity = newFactory.createEntity();
 
         Assertions.assertNotNull(entity);
         Assertions.assertNull(entity.getId());
@@ -34,10 +23,10 @@ public class EntityTest {
     @Test
     public void entityMetadata() {
         final Proxi proxi = Proxi.getInstance();
-        final ProxyWrapper<TestEntity> newFactory = proxi.getFactoryStorage().create(TestEntity.class);
-        final TestEntity entity = newFactory.createEntity();
+        final ProxyWrapper<MongoTestEntity> newFactory = proxi.getFactoryStorage().create(MongoTestEntity.class);
+        final MongoTestEntity entity = newFactory.createEntity();
 
-        entity.getMetadata().setCustomData("test", "Hi");
+        entity.getMetadata().setCustomData("Test", "Hi");
         entity.getMetadata().setCustomData("num", 123);
 
         Assertions.assertNotNull(entity);
