@@ -23,6 +23,8 @@ public class EntityProxyFactory<T extends Entity> implements ProxyWrapperFactory
 
     private final List<ClassVisitor<T>> visitors;
 
+    private static final MethodHandles.Lookup METHOD_HANDLE_LOOKUP = MethodHandles.lookup();
+
     public EntityProxyFactory(Class<T> entityClass, List<ClassVisitor<T>> visitors) {
         this.entityClass = entityClass;
         this.entityBuilder = this.createEntityBuilder();
@@ -55,12 +57,10 @@ public class EntityProxyFactory<T extends Entity> implements ProxyWrapperFactory
     @Override
     public MethodHandle findConstructor(Class<? extends T> proxiedClass) {
         try {
-            return MethodHandles.lookup().findConstructor(proxiedClass, MethodType.methodType(void.class));
+            return METHOD_HANDLE_LOOKUP.findConstructor(proxiedClass, MethodType.methodType(void.class));
         } catch (NoSuchMethodException | IllegalAccessException exception) {
-            new NoConstructorFoundException(this.entityClass, exception).printStackTrace();
+            throw new NoConstructorFoundException(this.entityClass, exception);
         }
-
-        return null;
     }
 
     private DynamicType.Builder<T> createEntityBuilder() {

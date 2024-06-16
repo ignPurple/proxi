@@ -24,8 +24,7 @@ public class EntityProxy<T extends Entity> implements ProxyWrapper<T> {
     @Override
     public T createEntity() {
         if (this.constructor == null) {
-            new NoConstructorFoundException(this.originalClass, null).printStackTrace();
-            return null;
+            throw new NoConstructorFoundException(this.originalClass, null);
         }
 
         try {
@@ -33,10 +32,8 @@ public class EntityProxy<T extends Entity> implements ProxyWrapper<T> {
             Proxi.getInstance().getMetadataStorage().register(entity, EntityMetadata.createMetadata(this.fields));
             return entity;
         } catch (Throwable exception) {
-            new EntityCreationException(this.originalClass, exception).printStackTrace();
+            throw new EntityCreationException(this.originalClass, exception);
         }
-
-        return null;
     }
 
     @Override
