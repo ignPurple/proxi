@@ -1,10 +1,11 @@
 package net.ignpurple.proxi.api.entity.annotation;
 
+import net.ignpurple.proxi.api.entity.IDEntity;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import net.ignpurple.proxi.api.entity.IDEntity;
 
 /**
  * This is used to define which field inside

@@ -20,4 +20,14 @@ public interface Entity {
     default Metadata getMetadata() {
         return null;
     }
+
+    /**
+     * Gets the class of the entity, use this instead of {@link Object#getClass()},
+     * in case the entity is proxied, and you need the class you
+     * expect the entity to be.
+     * @return The class of the entity, if it's proxied; the superclass.
+     */
+    default <T> Class<T> getType() {
+        return (Class<T>) this.getClass();
+    }
 }

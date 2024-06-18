@@ -3,10 +3,11 @@ package net.ignpurple.proxi.core.storage.factory;
 import net.ignpurple.proxi.api.entity.Entity;
 import net.ignpurple.proxi.api.factory.ProxyWrapper;
 import net.ignpurple.proxi.api.factory.ProxyWrapperFactory;
-import net.ignpurple.proxi.api.visitor.ClassVisitor;
 import net.ignpurple.proxi.api.storage.Storage;
+import net.ignpurple.proxi.api.visitor.ClassVisitor;
 import net.ignpurple.proxi.core.factory.EntityProxyFactory;
 import net.ignpurple.proxi.core.visitor.MetadataVisitor;
+import net.ignpurple.proxi.core.visitor.TypeMethodVisitor;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
 public class FactoryStorage extends Storage<Class<? extends Entity>, ProxyWrapper<? extends Entity>> {
 
     public <T extends Entity> ProxyWrapper<T> makeFactory(Class<T> entityClass) {
-        return this.makeFactory(entityClass, List.of(new MetadataVisitor<>()));
+        return this.makeFactory(entityClass, List.of(new MetadataVisitor<>(), new TypeMethodVisitor<>()));
     }
 
     public <T extends Entity> ProxyWrapper<T> makeFactory(Class<T> entityClass, List<ClassVisitor<T>> visitors) {

@@ -2,6 +2,7 @@ package net.ignpurple.proxi.core.factory;
 
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.dynamic.DynamicType;
+import net.bytebuddy.dynamic.scaffold.TypeValidation;
 import net.ignpurple.proxi.api.entity.Entity;
 import net.ignpurple.proxi.api.exception.NoConstructorFoundException;
 import net.ignpurple.proxi.api.factory.ProxyWrapper;
@@ -58,13 +59,19 @@ public class EntityProxyFactory<T extends Entity> implements ProxyWrapperFactory
     public MethodHandle findConstructor(Class<? extends T> proxiedClass) {
         try {
             return METHOD_HANDLE_LOOKUP.findConstructor(proxiedClass, MethodType.methodType(void.class));
-        } catch (NoSuchMethodException | IllegalAccessException exception) {
+        } catch (Exception exception) {
             throw new NoConstructorFoundException(this.entityClass, exception);
         }
     }
 
     private DynamicType.Builder<T> createEntityBuilder() {
-        return new ByteBuddy()
-            .subclass(this.entityClass);
+        try {
+            return new ByteBuddy()
+                .with(TypeValidation.DISABLED)
+                .subclass(this.entityClass)
+                .annotateType(this.entityClass.getAnnotations());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
